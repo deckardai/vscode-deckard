@@ -1,32 +1,30 @@
 {
-    "name": "deckard",
-    "displayName": "deckard",
-    "description": "Connector for Deckard.ai coding assistant",
-    "version": "0.0.1",
-    "publisher": "DeckardAi",
-    "engines": {
-        "vscode": "^1.4.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "*"
-    ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "commands": [{
-            "command": "extension.sayHello",
-            "title": "Hello World"
-        }]
-    },
-    "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
-    },
-    "devDependencies": {
-        "typescript": "^1.8.5",
-        "vscode": "^0.11.0"
-    }
+  "name": "deckard",
+  "displayName": "deckard",
+  "description": "Connector for Deckard.ai coding assistant",
+  "version": "0.2.2",
+  "publisher": "DeckardAi",
+  "repository": "https://github.com/deckardai/atom-deckard",
+  "engines": {
+    "vscode": "^1.4.0"
+  },
+  "categories": [
+    "Other",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {},
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.5",
+    "vsce": "^1.8.1",
+    "vscode": "^0.11.0"
+  }
 }
