@@ -4,7 +4,7 @@
   "description": "Connector for Deckard.ai coding assistant",
   "version": "0.2.2",
   "publisher": "DeckardAi",
-  "repository": "https://github.com/deckardai/atom-deckard",
+  "repository": "https://github.com/deckardai/vscode-deckard",
   "engines": {
     "vscode": "^1.4.0"
   },
