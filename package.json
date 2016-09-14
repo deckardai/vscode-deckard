@@ -2,7 +2,7 @@
     "name": "deckard",
     "displayName": "deckard",
     "description": "Connector for Deckard.ai coding assistant",
-    "version": "0.2.4",
+    "version": "0.2.7",
     "publisher": "DeckardAi",
     "repository": "https://github.com/deckardai/vscode-deckard",
     "license": "MIT",
