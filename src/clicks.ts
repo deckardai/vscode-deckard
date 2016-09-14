@@ -49,6 +49,7 @@ export default class Clicks {
             path: event.textEditor.document.fileName,
             lineno: start.line,
             charno: start.character,
+            editor: 'vscode',
         }
 
         request({
