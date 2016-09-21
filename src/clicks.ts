@@ -1,5 +1,5 @@
 
-import {Disposable, TextEditor, TextEditorSelectionChangeEvent, window, commands, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
+import {Disposable, TextEditor, TextEditorSelectionChangeEvent, TextDocumentChangeEvent, window, workspace, commands, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
 
 import * as request from 'request'
 
@@ -15,6 +15,7 @@ export default class Clicks {
 
         window.onDidChangeActiveTextEditor(this._onActivateEditor, this, subscriptions)
         window.onDidChangeTextEditorSelection(this._onSelectText, this, subscriptions)
+        workspace.onDidSaveTextDocument(this._onSave, this, subscriptions)
 
         // create a combined disposable from both event subscriptions
         this._disposable = Disposable.from(...subscriptions)
@@ -45,14 +46,27 @@ export default class Clicks {
         }
         this.lastTimeMs = nowMs
 
-        let body = {
+        this.post("event", {
             path: event.textEditor.document.fileName,
             lineno: start.line,
             charno: start.character,
-        }
+        })
+    }
 
+    private _onSave(document: TextDocument) {
+        let content = document.getText()
+        if(content.length > 1000 * 1000) {
+            content = null
+        }
+        this.post("change", {
+            fullPath: document.fileName,
+            content: content,
+        })
+    }
+
+    private post(path: string, body: Object) {
         request({
-            url: 'http://localhost:3325/event',
+            url: 'http://localhost:3325/' + path,
             method: 'post',
             json: true,
             body: body,
