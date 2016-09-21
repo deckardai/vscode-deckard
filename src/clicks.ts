@@ -1,9 +1,12 @@
 
-import {Disposable, TextEditor, TextEditorSelectionChangeEvent, TextDocumentChangeEvent, window, workspace, commands, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument} from 'vscode';
+import {Disposable, TextEditor, TextEditorSelectionChangeEvent, TextDocumentChangeEvent, window, workspace, commands, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument, Range} from 'vscode';
 
 import * as request from 'request'
 
 export default class Clicks {
+
+    maxLength = 1000
+    minPauseMs = 500
 
     private _disposable: Disposable
     private lastTimeMs: number = 0
@@ -41,15 +44,25 @@ export default class Clicks {
         }
 
         let nowMs = new Date().getTime()
-        if (nowMs < this.lastTimeMs + 1000) {
+        if (nowMs < this.lastTimeMs + this.minPauseMs) {
             return  // Already updating
         }
         this.lastTimeMs = nowMs
+
+        let text = event.textEditor.document
+            .getText(new Range(start, end))
+            .substr(0, this.maxLength);
 
         this.post("event", {
             path: event.textEditor.document.fileName,
             lineno: start.line,
             charno: start.character,
+            end: {
+                lineno: end.line,
+                charno: end.character,
+            },
+            text: text,
+            editor: 'vscode',
         })
     }
 
@@ -72,7 +85,7 @@ export default class Clicks {
             body: body,
         }, function (err, resp, data) {
             if (err) {
-                console.log(err)
+                console.log(err.toString())
             }
             else if (resp.statusCode != 200) {
                 console.error("Unexpected HTTP #{resp.statusCode}")
