@@ -9,14 +9,23 @@ export default class {
     dlUrl = "https://www.deckard.ai/#dl"
 
     startDownload() {
-        child_process.exec(
-            "open " + this.dlUrl
-        )
+        if(process.platform == "darwin") {
+            var cmd = "open " + this.dlUrl
+        } else {
+            var cmd = "xdg-open " + this.dlUrl
+        }
+        child_process.exec(cmd)
     }
 
     startAssistant() {
+        if(process.platform == "darwin") {
+            var cmd = "open -a Deckard"
+        } else {
+            var cmd = "PATH=/usr/local/bin:/opt/deckard:$PATH deckard"
+        }
+
         child_process.exec(
-            "ELECTRON_RUN_AS_NODE='' open -a Deckard",
+            "ELECTRON_RUN_AS_NODE='' " + cmd,
            (err, stdout, stderr) => {
                 if (err) {
                     console.log(err, stderr)
