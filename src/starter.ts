@@ -6,13 +6,26 @@ import {pingAsync} from './request'
 
 export default class {
 
+    dlUrl = "https://www.deckard.ai/#dl"
+
+    startDownload() {
+        child_process.exec(
+            "open " + this.dlUrl
+        )
+    }
+
     startAssistant() {
         child_process.exec(
             "ELECTRON_RUN_AS_NODE='' open -a Deckard",
            (err, stdout, stderr) => {
                 if (err) {
                     console.log(err, stderr)
-                    window.showErrorMessage(stderr)
+                    window.showInformationMessage("Install Deckard from " + this.dlUrl, "Download")
+                    .then((choice) => {
+                        if(choice) {
+                            this.startDownload()
+                        }
+                    })
                 }
             })
     }
