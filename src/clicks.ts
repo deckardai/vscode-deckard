@@ -1,7 +1,7 @@
 
 import {Disposable, TextEditor, TextEditorSelectionChangeEvent, TextDocumentChangeEvent, window, workspace, commands, ExtensionContext, StatusBarAlignment, StatusBarItem, TextDocument, Range} from 'vscode';
 
-import * as request from 'request'
+import {post} from './request'
 
 export default class Clicks {
 
@@ -53,7 +53,7 @@ export default class Clicks {
             .getText(new Range(start, end))
             .substr(0, this.maxLength);
 
-        this.post("event", {
+        post("event", {
             path: event.textEditor.document.fileName,
             lineno: start.line,
             charno: start.character,
@@ -71,25 +71,9 @@ export default class Clicks {
         if(content.length > 1000 * 1000) {
             content = null
         }
-        this.post("change", {
+        post("change", {
             fullPath: document.fileName,
             content: content,
-        })
-    }
-
-    private post(path: string, body: Object) {
-        request({
-            url: 'http://localhost:3325/' + path,
-            method: 'post',
-            json: true,
-            body: body,
-        }, function (err, resp, data) {
-            if (err) {
-                console.log(err.toString())
-            }
-            else if (resp.statusCode != 200) {
-                console.error("Unexpected HTTP #{resp.statusCode}")
-            }
         })
     }
 }
